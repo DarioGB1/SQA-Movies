@@ -78,7 +78,21 @@ class MovieController extends Controller
      */
     public function show($id)
     {
-        //
+        $movie = Movie::find($id);
+
+        if (!$movie){
+            return response()->json([
+                'Data' => "No se han encontrado datos",
+                'Response' => 404
+            ],404);
+        }
+
+
+        return response()->json([
+            "data" => $movie,
+            "Response" => 201
+        ], 201);
+
     }
 
     /**
@@ -90,7 +104,49 @@ class MovieController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $movie = Movie::find($id);
+
+
+        if (!$movie){
+
+            return response()->json([
+                "message" => "No se ha encontrado la pelicula",
+                "response" => 404
+            ], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'titulo' => 'required|string|max:255',
+            'duracion' => 'required|string|max:3',
+            'fecha_estreno' => 'required|string',
+            'sinopsis' => 'required|string',
+            'director' => 'required|string|max:255',
+            'genero' => 'required|string|max:50',
+            'imagen_url' => 'required|string'
+        ]);
+
+        if ($validator->fails()){
+            return response()->json($validator->errors());
+        }
+
+        $movie->titulo = $request->titulo;
+        $movie->duracion = $request->duracion;
+        $movie->fecha_estreno = $request->fecha_estreno;
+        $movie->sinopsis = $request->sinopsis;
+        $movie->director = $request->director;
+        $movie->genero = $request->genero;
+        $movie->imagen_url = $request->imagen_url;
+
+
+        $movie->save();
+
+        return response()->json([
+            "movie" => $movie,
+            "message" => "Datos actualizados",
+            "response" => 201
+        ], 201);
+
+
     }
 
     /**
@@ -101,6 +157,22 @@ class MovieController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $movie = Movie::find($id);
+
+        if(!$id){
+
+            return response()->json([
+                'Message' => "No se ha encontrado la pelicula",
+                'Reponse' => 404
+            ], 404);
+        }
+
+        $movie->delete();
+
+        return response()->json([
+            "Message" => "Pelicula eliminada",
+            "Response" => '201'
+        ],201);
+
     }
 }

@@ -17,13 +17,12 @@ class Serie extends Model
      * @var array
      */
     protected $fillable = [
-        'titulo',
-        'temporadas',
-        'fecha_estreno',
+        'nombre_serie',
         'sinopsis',
+        'temporadas',
+        'imagen_portada',
         'genero',
-        'creador',
-        'imagen_url',
+        'creador'
     ];
 
     // Definir relaciones si es necesario

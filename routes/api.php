@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\SerieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,5 +23,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(MovieController::class)->prefix('/movies')->group(function () {
     Route::get('index','index');
     Route::post('store','store');
+    Route::get('/movie/{id}', 'show');
+    Route::post('/movie/delete/{id}', 'destroy');
+    Route::post('/movie/update/{id}', 'update');
+});
+
+
+Route::controller(SerieController::class)->prefix('/series')->group(function() {
+    Route::get('index', 'index');
+    Route::post('store', 'store');
     Route::get('/{id}', 'show');
+    Route::post('/delete/{id}', 'destroy');
+    Route::post('/update/{id}', 'update');
 });
